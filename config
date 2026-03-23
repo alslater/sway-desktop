@@ -1,0 +1,348 @@
+# Sway configuration - translated from awesomewm alstheme-lx
+# Theme: dark background (#140c0b), cyan accents (#13f0f0)
+
+### Cursor
+set $cursor_theme Adwaita
+set $cursor_size 24
+seat * xcursor_theme $cursor_theme $cursor_size
+seat * hide_cursor when-typing disabled
+exec_always gsettings set org.gnome.desktop.interface cursor-theme $cursor_theme
+exec_always gsettings set org.gnome.desktop.interface cursor-size $cursor_size
+
+### Keyboard
+input type:keyboard {
+    xkb_layout gb
+}
+
+### Variables
+set $mod Mod4
+set $alt Mod1
+
+# Home row direction keys (vim-like)
+set $left h
+set $down j
+set $up k
+set $right l
+
+set $term ghostty
+set $browser chrome
+set $guieditor pluma
+set $scrlocker swaylock -f -F -e -l -c 000000
+
+include /etc/sway/config-vars.d/*
+
+### Output configuration
+# Wallpaper
+output * bg ~/.config/awesome/themes/alstheme-lx/double_skull_wide.jpg fill
+
+# DP-4 (2560x1440) is physically on the left, DP-3 (3840x2160) on the right
+output DP-4 position 0,0
+output DP-3 position 2560,0 mode 3840x2160@60Hz
+
+# Paired workspaces: N on DP-3 (right), N+10 on DP-4 (left) move together
+workspace 1 output DP-3
+workspace 2 output DP-3
+workspace 3 output DP-3
+workspace 4 output DP-3
+workspace 5 output DP-3
+workspace 6 output DP-3
+workspace 7 output DP-3
+workspace 8 output DP-3
+workspace 9 output DP-3
+workspace 11 output DP-4
+workspace 12 output DP-4
+workspace 13 output DP-4
+workspace 14 output DP-4
+workspace 15 output DP-4
+workspace 16 output DP-4
+workspace 17 output DP-4
+workspace 18 output DP-4
+workspace 19 output DP-4
+# output eDP-1 position 1920,0
+
+### Input configuration
+# Focus follows mouse (sloppy focus)
+focus_follows_mouse yes
+focus_on_window_activation urgent
+
+### Appearance
+font pango:Nasalization Rg 11
+
+# Colors from alstheme-lx
+# border_width = 3
+default_border pixel 3
+default_floating_border normal 3
+
+# Rounded corners (requires swayfx - comment out if using stock sway)
+# corner_radius 7
+
+# Gaps (useless_gap = 0 in awesome config)
+gaps inner 0
+gaps outer 0
+
+# class                 border   background  text     indicator  child_border
+client.focused          #000000  #314D46     #13f0f0  #13f0f0    #000000
+client.unfocused        #000000  #140c0b     #e2ccb0  #000000    #000000
+client.focused_inactive #000000  #140c0b     #e2ccb0  #000000    #000000
+client.urgent           #2a1f1e  #2a1f1e     #CC9393  #CC9393    #2a1f1e
+
+### Idle / screen lock
+exec swayidle -w \
+    timeout 600 '$scrlocker' \
+    before-sleep '$scrlocker'
+
+### Autostart
+exec_always /home/aslate/dev/als_tiling/start.sh
+exec nm-applet --indicator
+exec dunst
+# exec atuin daemon
+# exec /usr/bin/xscreensaver -nosplash
+# exec mate-volume-control-status-icon  # Use pavucontrol or similar
+
+### Key bindings
+
+## Basics
+bindsym --no-repeat $mod+s exec ~/.config/sway/keys-display.sh
+bindsym $alt+Tab exec ~/.config/sway/focus-next.sh
+bindsym $mod+Tab exec ~/.config/sway/focus-next.sh
+
+# Run dialog (was: mod+r in awesome)
+bindsym $mod+d exec ~/.config/sway/rofi-run.sh
+# XDG application menu (was: mod+w in awesome)
+bindsym --no-repeat $mod+w exec ~/.config/sway/rofi-drun.sh
+bindsym $mod+Return exec $term
+bindsym $mod+Shift+c kill
+bindsym $mod+q exec $browser
+bindsym $mod+a exec $guieditor
+
+# Reload sway config (was: awesome.restart)
+bindsym $mod+Control+r reload
+
+# Exit sway (was: awesome.quit)
+bindsym $mod+Shift+q exec swaynag -t warning -m 'Exit sway?' -B 'Yes, exit' 'swaymsg exit'
+
+# Lock screen (was: Alt+Control+l)
+bindsym $alt+Control+l exec $scrlocker
+
+# Screenshot (was: Print -> mate-screenshot -i)
+bindsym Print exec grimshot --notify interactive
+
+# Floating modifier: Super+LMB drag, Super+RMB resize
+floating_modifier $mod normal
+
+## Focus - directional (was: Super+h/j/k/l)
+bindsym $mod+$left  focus left
+bindsym $mod+$down  focus down
+bindsym $mod+$up    focus up
+bindsym $mod+$right focus right
+# Arrow key variants (was: Super+Left/Right = prev/next workspace, not directional)
+# In awesome, Super+Left/Right switched tags across both screens together:
+bindsym $mod+Left  exec ~/.config/sway/workspace-switch.sh prev
+bindsym $mod+Right exec ~/.config/sway/workspace-switch.sh next
+
+# Focus next/prev by index (was: Alt+j/k)
+bindsym $alt+$down focus next
+bindsym $alt+$up   focus prev
+
+# Focus next/prev screen (was: Super+Control+j/k)
+bindsym $mod+Control+$down focus output next
+bindsym $mod+Control+$up   focus output prev
+
+## Move focused window
+# On managed workspaces (1-9): smart grid swap, no escape from workspace
+# On other workspaces: sway's built-in move
+bindsym $mod+Shift+$left  exec ~/.config/sway/swap-window.py h
+bindsym $mod+Shift+$down  exec ~/.config/sway/swap-window.py j
+bindsym $mod+Shift+$up    exec ~/.config/sway/swap-window.py k
+bindsym $mod+Shift+$right exec ~/.config/sway/swap-window.py l
+
+# Move to other output (was: Super+o)
+bindsym $mod+o exec ~/.config/sway/move-to-other-screen.sh
+
+## Layout
+# Toggle fullscreen (was: Super+f)
+bindsym $mod+f fullscreen
+
+# Toggle floating (was: Super+Control+space)
+bindsym $mod+Control+space floating toggle
+
+# Swap focus between tiling and floating (was: Super+space = next layout)
+bindsym $mod+space focus mode_toggle
+
+# Maximize - fills workspace area, respects waybar (unlike fullscreen)
+bindsym $mod+m fullscreen disable
+
+# Split horizontal/vertical
+bindsym $mod+b splith
+bindsym $mod+Shift+v splitv
+
+# Layout cycling (was: Super+space = next layout)
+#bindsym $mod+Control+space layout toggle splith splitv tabbed stacking
+
+# Keep on top / sticky (was: Super+t = ontop)
+bindsym $mod+t sticky toggle
+
+## Scratchpad (replaces quake dropdown: Super+z)
+# The scratchpad is the closest sway equivalent to the quake dropdown
+bindsym $mod+z scratchpad show
+bindsym $mod+Shift+z move scratchpad
+bindsym $mod+n move scratchpad
+
+# Scratchpad (also traditional bindings)
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+## Jump to urgent window (was: Super+u)
+bindsym $mod+u [urgent=latest] focus
+
+## Toggle bar visibility (was: Super+b)
+bindsym $mod+Shift+b bar mode toggle
+
+## Volume control (PipeWire via wpctl)
+bindsym $alt+Up        exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+
+bindsym $alt+Down      exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-
+bindsym $alt+m         exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym $alt+Control+m exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 1.0
+bindsym $alt+Control+0 exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 0
+
+# XF86 volume keys
+bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute        exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
+## Brightness (was: XF86MonBrightnessUp/Down)
+bindsym XF86MonBrightnessUp   exec brightnessctl set 10%+
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+
+## MPD control (was: Alt+Control+Up/Down/Left/Right)
+bindsym $alt+Control+Up    exec mpc toggle
+bindsym $alt+Control+Down  exec mpc stop
+bindsym $alt+Control+Left  exec mpc prev
+bindsym $alt+Control+Right exec mpc next
+
+## Clipboard: terminal <-> gtk (was: Super+c/v with xsel)
+# Using wl-clipboard for Wayland
+bindsym $mod+c exec wl-paste --primary | wl-copy
+bindsym $mod+v exec wl-paste | wl-copy --primary
+
+## Calendar notification (was: Alt+c)
+bindsym $alt+c exec sh /home/aslate/scripts/calendar_notification.sh
+
+## VPN (was: Super+Control+v)
+# bindsym $mod+Control+v exec ghostty -e /home/aslate/bin/startvpn
+
+## Display management: set external monitor left-of laptop (was: Alt+`)
+# bindsym $alt+grave exec swaymsg output DP-1 enable position 0,0 && swaymsg output eDP-1 position 1920,0
+
+### Workspaces (9 virtual workspaces spanning both screens)
+bindsym $mod+1 exec ~/.config/sway/workspace-switch.sh goto 1
+bindsym $mod+2 exec ~/.config/sway/workspace-switch.sh goto 2
+bindsym $mod+3 exec ~/.config/sway/workspace-switch.sh goto 3
+bindsym $mod+4 exec ~/.config/sway/workspace-switch.sh goto 4
+bindsym $mod+5 exec ~/.config/sway/workspace-switch.sh goto 5
+bindsym $mod+6 exec ~/.config/sway/workspace-switch.sh goto 6
+bindsym $mod+7 exec ~/.config/sway/workspace-switch.sh goto 7
+bindsym $mod+8 exec ~/.config/sway/workspace-switch.sh goto 8
+bindsym $mod+9 exec ~/.config/sway/workspace-switch.sh goto 9
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+
+# Ctrl+Shift+Mod+[1-9]: send window to workspace (screen-aware)
+bindsym Control+Shift+$mod+1 exec ~/.config/sway/send-to-workspace.sh 1
+bindsym Control+Shift+$mod+2 exec ~/.config/sway/send-to-workspace.sh 2
+bindsym Control+Shift+$mod+3 exec ~/.config/sway/send-to-workspace.sh 3
+bindsym Control+Shift+$mod+4 exec ~/.config/sway/send-to-workspace.sh 4
+bindsym Control+Shift+$mod+5 exec ~/.config/sway/send-to-workspace.sh 5
+bindsym Control+Shift+$mod+6 exec ~/.config/sway/send-to-workspace.sh 6
+bindsym Control+Shift+$mod+7 exec ~/.config/sway/send-to-workspace.sh 7
+bindsym Control+Shift+$mod+8 exec ~/.config/sway/send-to-workspace.sh 8
+bindsym Control+Shift+$mod+9 exec ~/.config/sway/send-to-workspace.sh 9
+
+# Numpad workspace switching (was: np_map in awesome)
+bindsym $mod+KP_End    workspace number 1
+bindsym $mod+KP_Down   workspace number 2
+bindsym $mod+KP_Next   workspace number 3
+bindsym $mod+KP_Left   workspace number 4
+bindsym $mod+KP_Begin  workspace number 5
+bindsym $mod+KP_Right  workspace number 6
+bindsym $mod+KP_Home   workspace number 7
+bindsym $mod+KP_Up     workspace number 8
+bindsym $mod+KP_Prior  workspace number 9
+
+# Previous workspace (was: Super+Escape = history.restore)
+bindsym $mod+Escape workspace back_and_forth
+
+### Resize mode
+mode "resize" {
+    bindsym $left  resize shrink width  10px
+    bindsym $down  resize grow   height 10px
+    bindsym $up    resize shrink height 10px
+    bindsym $right resize grow   width  10px
+
+    bindsym Left   resize shrink width  10px
+    bindsym Down   resize grow   height 10px
+    bindsym Up     resize shrink height 10px
+    bindsym Right  resize grow   width  10px
+
+    # Master width factor equivalent (was: Alt+Shift+l/h)
+    # Resize the main window in a split layout
+    bindsym $alt+Shift+l resize grow   width 5px
+    bindsym $alt+Shift+h resize shrink width 5px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+### Window rules (from awful.rules)
+
+# Dialogs: float them so als_tiling never tries to tile them
+for_window [window_type="dialog"]       floating enable
+for_window [window_role="dialog"]       floating enable
+for_window [window_type="popup_menu"]   floating enable
+for_window [window_type="utility"]      floating enable
+for_window [app_id="gcr-prompter"]      floating enable
+
+# Floating windows
+# Tabbed layout on all DP-4 workspaces (11-19)
+for_window [workspace="^1[1-9]$"] layout tabbed
+
+for_window [app_id="pavucontrol"]            floating enable
+for_window [app_id="nm-connection-editor"]   floating enable, border normal 3
+for_window [class="Nm-connection-editor"]    floating enable, border normal 3
+for_window [class="Lazarus"]                 floating enable
+for_window [class="Imager"]                 floating enable
+for_window [app_id="evolution-alarm-notify"] floating enable, sticky enable
+for_window [class="Evolution-alarm-notify"]  floating enable, sticky enable
+for_window [class="Msgcompose"]              floating enable
+
+# Workspace assignments (screen 1 = output 1 in awesome = first output)
+assign [class="Thunderbird"]            workspace number 1
+assign [class="Evolution"]              workspace number 1
+assign [class="Microsoft Teams.*"]      workspace number 1
+
+# Opacity (supported natively in sway)
+for_window [app_id="com.mitchellh.ghostty"] opacity 0.9
+for_window [class="Mate-terminal"]          opacity 0.9
+
+# No titlebars for these apps
+for_window [class="Code"]             border pixel 3
+for_window [class="Microsoft-edge"]   border pixel 3
+for_window [class="Google-chrome"]    border pixel 3
+for_window [class="firefox"]          border pixel 3
+for_window [app_id="firefox"]         border pixel 3
+for_window [class="Steam"]            border pixel 3
+
+### Status Bar
+exec_always sh -c 'pkill waybar; waybar'
+
+include /etc/sway/config.d/*
