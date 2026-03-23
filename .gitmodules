@@ -1,0 +1,3 @@
+[submodule "als_sway_tiling"]
+	path = als_sway_tiling
+	url = git@github.com:alslater/als_sway_tiling.git
