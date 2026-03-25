@@ -94,6 +94,7 @@ exec swayidle -w \
 ### Autostart
 exec_always ~/.config/sway/als_sway_tiling/start.sh
 exec systemctl --user start xdg-desktop-portal-wlr
+exec ~/.config/sway/gnome-keyring-ssh.sh
 exec nm-applet --indicator
 exec dunst
 # exec atuin daemon
@@ -118,6 +119,9 @@ bindsym $mod+a exec $guieditor
 
 # Reload sway config (was: awesome.restart)
 bindsym $mod+Control+r reload
+
+# Restart Chrome, preserving workspace assignments
+bindsym $mod+Shift+r exec ~/.config/sway/als_sway_tiling/venv/bin/python3 ~/.config/sway/als_sway_tiling/restart-chrome.py
 
 # Exit sway (was: awesome.quit)
 bindsym $mod+Shift+q exec swaynag -t warning -m 'Exit sway?' -B 'Yes, exit' 'swaymsg exit'
@@ -165,15 +169,14 @@ bindsym $mod+o exec ~/.config/sway/move-to-other-screen.sh
 ## Layout
 # Toggle fullscreen (was: Super+f)
 bindsym $mod+f fullscreen
+# Maximise isn't a thing, so go full on full instead
+bindsym $mod+m fullscreen
 
 # Toggle floating (was: Super+Control+space)
 bindsym $mod+Control+space floating toggle
 
 # Swap focus between tiling and floating (was: Super+space = next layout)
 bindsym $mod+space focus mode_toggle
-
-# Maximize - fills workspace area, respects waybar (unlike fullscreen)
-bindsym $mod+m fullscreen disable
 
 # Split horizontal/vertical
 bindsym $mod+b splith
