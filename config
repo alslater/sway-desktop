@@ -166,6 +166,10 @@ bindsym $mod+Shift+$right exec ~/.config/sway/swap-window.py l
 # Move to other output (was: Super+o)
 bindsym $mod+o exec ~/.config/sway/move-to-other-screen.sh
 
+# Sync screen 2 to the paired workspace for the current screen 1 workspace
+# e.g. if screen 1 is on ws 3, switches screen 2 to ws 13
+bindsym $mod+Shift+o exec ~/.config/sway/sync-screen2.sh
+
 ## Layout
 # Toggle fullscreen (was: Super+f)
 bindsym $mod+f fullscreen
