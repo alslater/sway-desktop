@@ -49,6 +49,7 @@ workspace 6 output DP-3
 workspace 7 output DP-3
 workspace 8 output DP-3
 workspace 9 output DP-3
+workspace 20 output DP-3
 workspace 11 output DP-4
 workspace 12 output DP-4
 workspace 13 output DP-4
@@ -97,6 +98,7 @@ exec systemctl --user start xdg-desktop-portal-wlr
 exec ~/.config/sway/gnome-keyring-ssh.sh
 exec nm-applet --indicator
 exec dunst
+exec insync start
 # exec atuin daemon
 # exec /usr/bin/xscreensaver -nosplash
 # exec mate-volume-control-status-icon  # Use pavucontrol or similar
@@ -238,8 +240,9 @@ bindsym $mod+v exec wl-paste | wl-copy --primary
 ## Calendar notification (was: Alt+c)
 bindsym $alt+c exec sh /home/aslate/scripts/calendar_notification.sh
 
-## VPN (was: Super+Control+v)
-# bindsym $mod+Control+v exec ghostty -e /home/aslate/bin/startvpn
+## Switch to VM workspace (was: VPN)
+# Only switches if a VirtualBox window is present on workspace 20
+bindsym $mod+Control+v exec ~/.config/sway/goto-vm.sh
 
 ## Restart XDG desktop portal (fixes black file picker dialog)
 bindsym $mod+Control+p exec systemctl --user restart xdg-desktop-portal-gtk && systemctl --user restart xdg-desktop-portal
@@ -337,6 +340,12 @@ for_window [class="Imager"]                 floating enable
 for_window [app_id="evolution-alarm-notify"] floating enable, sticky enable
 for_window [class="Evolution-alarm-notify"]  floating enable, sticky enable
 for_window [class="Msgcompose"]              floating enable
+
+# VirtualBox — assign VM windows to workspace 20 (not managed by als_tiling,
+# not tabbed).  Alone on the workspace the VM fills it entirely.
+# Use mod+f to fullscreen (hides waybar, gives Guest Additions the true resolution).
+assign [class="VirtualBox Machine"]  workspace number 20
+assign [class="VirtualBoxVM"]        workspace number 20
 
 # Workspace assignments (screen 1 = output 1 in awesome = first output)
 assign [class="Thunderbird"]            workspace number 1
