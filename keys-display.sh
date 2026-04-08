@@ -12,7 +12,7 @@ bindings=(
     "Super+Ctrl+r          Reload sway config"
     "Super+Shift+q         Exit sway"
     "Alt+Ctrl+l            Lock screen"
-    "Print                 Screenshot region → ~/Pictures/screenshots/"
+    "Ctrl+Print            Screenshot region → ~/Pictures/screenshots/"
     "Shift+Print           Screenshot region → clipboard"
     ""
     "── FOCUS ────────────────────────────────────────"
