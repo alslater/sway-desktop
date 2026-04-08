@@ -1,0 +1,88 @@
+* {
+    font-family: Nasalization, sans-serif;
+    font-size: 19px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+window#waybar {
+    background: #140c0b;
+    color: #e2ccb0;
+}
+
+/* Workspaces */
+#workspaces button {
+    padding: 0 5px;
+    color: #e2ccb0;
+    background: transparent;
+}
+#workspaces button.focused {
+    color: #13f0f0;
+    background: #314D46;
+}
+#workspaces button.urgent {
+    color: #CC9393;
+    background: #2a1f1e;
+}
+#workspaces button:hover {
+    background: #1e1a19;
+    color: #13f0f0;
+    box-shadow: none;
+}
+
+/* Layout mode indicator */
+#mode {
+    color: #13f0f0;
+    padding: 0 5px;
+}
+
+/* Active window title */
+#window {
+    color: #e2ccb0;
+    padding: 0 5px;
+}
+
+/* Right-side widgets */
+#cpu, #memory, #pulseaudio {
+    color: #e2ccb0;
+    padding: 0 2px;
+}
+#pulseaudio.muted {
+    color: #94928F;
+}
+
+/* Custom script widgets */
+#custom-aws,
+#custom-vpn,
+#custom-prtg {
+    color: #e2ccb0;
+    padding: 0 2px;
+}
+
+/* System tray */
+#tray {
+    padding: 0 4px;
+}
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: #2a1f1e;
+}
+
+/* Clock - monospace, cyan, matching the awesome textclock */
+#clock {
+    font-family: "alarm clock", monospace;
+    font-size: 24px;
+    color: #13f0f0;
+    padding: 0 4px;
+}
+
+#custom-teams-call {
+    color: #ff4444;
+    padding: 0 6px;
+}

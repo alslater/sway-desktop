@@ -1,0 +1,91 @@
+[
+    {
+        "layer": "top",
+        "position": "top",
+        "height": 54,
+        "exclusive": true,
+
+        "modules-left": ["sway/workspaces", "sway/mode"],
+        "modules-center": ["sway/window"],
+        "modules-right": [
+            "custom/teams-call", "custom/aws", "custom/vpn",
+            "cpu", "memory", "pulseaudio",
+            "tray", "clock"
+        ],
+
+        "sway/workspaces": {
+            "disable-scroll": false,
+            "all-outputs": false,
+            "format": "{name}",
+            "persistent-workspaces": {
+                "1": ["DP-3"],
+                "2": ["DP-3"],
+                "3": ["DP-3"],
+                "4": ["DP-3"],
+                "5": ["DP-3"],
+                "6": ["DP-3"],
+                "7": ["DP-3"],
+                "8": ["DP-3"],
+                "9": ["DP-3"],
+                "11": ["DP-4"],
+                "12": ["DP-4"],
+                "13": ["DP-4"],
+                "14": ["DP-4"],
+                "15": ["DP-4"],
+                "16": ["DP-4"],
+                "17": ["DP-4"],
+                "18": ["DP-4"],
+                "19": ["DP-4"]
+            }
+        },
+        "sway/mode": {
+            "format": "[{}]"
+        },
+        "sway/window": {
+            "max-length": 80
+        },
+
+        "custom/teams-call": {
+            "exec": "/home/aslate/.config/sway/teams-call-status.sh",
+            "interval": "once",
+            "signal": 8,
+            "format": "{}",
+            "escape": false
+        },
+
+        "custom/aws": {
+            "exec": "/home/aslate/scripts/aws_check_4_pg_update.sh",
+            "interval": 600,
+            "format": "{}",
+            "escape": false
+        },
+        "custom/vpn": {
+            "exec": "/home/aslate/scripts/check-vpn.sh",
+            "interval": 5,
+            "format": "{}",
+            "escape": false
+        },
+
+        "cpu": {
+            "interval": 5,
+            "format": "󰻠 {load}"
+        },
+        "memory": {
+            "interval": 5,
+            "format": "󰍛 {used:0.0f}G"
+        },
+        "pulseaudio": {
+            "format": "󰕾 {volume}%",
+            "format-muted": "󰖁 {volume}%",
+            "on-click": "pavucontrol"
+        },
+        "tray": {
+            "spacing": 5
+        },
+        "clock": {
+            "interval": 1,
+            "format": "| {:%d/%m/%y %H:%M:%S} |",
+            "on-click": "sh /home/aslate/scripts/calendar_notification.sh"
+        }
+    }
+]
