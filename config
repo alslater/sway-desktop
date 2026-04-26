@@ -24,7 +24,8 @@ set $down j
 set $up k
 set $right l
 
-set $term ghostty
+#set $term ghostty +new-window
+set $term mate-terminal
 set $browser chrome
 set $guieditor pluma
 set $scrlocker swaylock -f -F -e -l -c 000000
@@ -89,7 +90,7 @@ client.urgent           #2a1f1e  #2a1f1e     #CC9393  #CC9393    #2a1f1e
 
 ### Idle / screen lock
 exec swayidle -w \
-    timeout 600 '$scrlocker' \
+    timeout 900 '$scrlocker' \
     before-sleep '$scrlocker'
 
 ### Autostart
@@ -332,6 +333,9 @@ for_window [app_id="gcr-prompter"]      floating enable
 # Tabbed layout on all DP-4 workspaces (11-19)
 for_window [workspace="^1[1-9]$"] layout tabbed
 
+# Telegram Media Viewer → workspace 11 (app_id has dynamic suffix, match by title)
+for_window [title="Media viewer"] move to workspace number 11, focus
+
 for_window [app_id="pavucontrol"]            floating enable
 for_window [app_id="nm-connection-editor"]   floating enable, border normal 3
 for_window [class="Nm-connection-editor"]    floating enable, border normal 3
@@ -340,6 +344,21 @@ for_window [class="Imager"]                 floating enable
 for_window [app_id="evolution-alarm-notify"] floating enable, sticky enable
 for_window [class="Evolution-alarm-notify"]  floating enable, sticky enable
 for_window [class="Msgcompose"]              floating enable
+
+# Edge PWA apps — assign by window instance (crx__<app-id>) so they always
+# land on the correct workspace regardless of which workspace is focused.
+
+# outlook
+assign [class="Microsoft-edge" instance="crx__eoficlgicibekocmfdomjbfnjmehnhcd"] workspace number 1
+# teams
+assign [class="Microsoft-edge" instance="crx__ompifgpmddkgmclendfeacglnodjjndh"] workspace number 1
+# opsgenie
+assign [class="Microsoft-edge" instance="crx__bkpdmhjacabojinehkknegbjnjbpnlco"] workspace number 1
+# zabbix
+assign [class="Microsoft-edge" instance="crx__dhlcohdmdbcmonjefecobobgmldndfli"] workspace number 11
+# whatsapp
+for_window [class="Microsoft-edge" instance="crx__hnpfjngllnobngcgfapefoaidbinmjnm"] move scratchpad
+
 
 # VirtualBox — assign VM windows to workspace 20 (not managed by als_tiling,
 # not tabbed).  Alone on the workspace the VM fills it entirely.
@@ -354,7 +373,7 @@ assign [class="Microsoft Teams.*"]      workspace number 1
 
 # Opacity (supported natively in sway)
 for_window [app_id="com.mitchellh.ghostty"] opacity 0.9
-for_window [class="Mate-terminal"]          opacity 0.9
+for_window [app_id="mate-terminal"]         opacity 0.9
 
 # No titlebars for these apps
 for_window [class="Code"]             border pixel 3
