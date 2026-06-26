@@ -14,6 +14,8 @@ input type:keyboard {
     xkb_layout gb
 }
 
+primary_selection enabled
+
 ### Variables
 set $mod Mod4
 set $alt Mod1
@@ -26,7 +28,7 @@ set $right l
 
 #set $term ghostty +new-window
 set $term mate-terminal
-set $browser chrome
+set $browser /home/aslate/bin/chrome
 set $guieditor pluma
 set $scrlocker swaylock -f -F -e -l -c 000000
 
@@ -237,6 +239,8 @@ bindsym $alt+Control+Right exec mpc next
 # Using wl-clipboard for Wayland
 bindsym $mod+c exec wl-paste --primary | wl-copy
 bindsym $mod+v exec wl-paste | wl-copy --primary
+# Clipboard history picker (cliphist + rofi)
+bindsym $mod+Shift+p exec sh -c 'cliphist list | rofi -dmenu -p "Clipboard" | cliphist decode | wl-copy'
 
 ## Calendar notification (was: Alt+c)
 bindsym $alt+c exec sh /home/aslate/scripts/calendar_notification.sh
@@ -341,7 +345,7 @@ for_window [app_id="nm-connection-editor"]   floating enable, border normal 3
 for_window [class="Nm-connection-editor"]    floating enable, border normal 3
 for_window [class="Lazarus"]                 floating enable
 for_window [class="Imager"]                 floating enable
-for_window [app_id="evolution-alarm-notify"] floating enable, sticky enable
+for_window [app_id="evolution-alarm-notify"] floating enable, sticky enable, resize set 602 660
 for_window [class="Evolution-alarm-notify"]  floating enable, sticky enable
 for_window [class="Msgcompose"]              floating enable
 

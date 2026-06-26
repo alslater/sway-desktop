@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cliphist --version)",
+      "Bash(sway --validate)",
+      "Bash(sway --unsupported-gpu --validate)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(swaymsg -t get_log)",
+      "Bash(journalctl --user -u sway --no-pager -n 30)",
+      "Read(//home/aslate/.local/share/sway/**)",
+      "Bash(wl-paste --help)",
+      "Bash(systemctl --user daemon-reload)",
+      "Bash(systemctl --user enable --now cliphist.service)"
+    ]
+  }
+}
