@@ -86,3 +86,15 @@ window#waybar {
     color: #ff4444;
     padding: 0 6px;
 }
+
+/* Claude quota usage — amber past 70%, red past 90% */
+#custom-claude-usage {
+    color: #e2ccb0;
+    padding: 0 6px;
+}
+#custom-claude-usage.warning {
+    color: #e0af68;
+}
+#custom-claude-usage.critical {
+    color: #ff4444;
+}

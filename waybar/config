@@ -8,7 +8,7 @@
         "modules-left": ["sway/workspaces", "sway/mode"],
         "modules-center": ["sway/window"],
         "modules-right": [
-            "custom/teams-call", "custom/aws", "custom/vpn",
+            "custom/teams-call", "custom/claude-usage", "custom/aws", "custom/vpn",
             "cpu", "memory", "pulseaudio",
             "tray", "clock"
         ],
@@ -51,6 +51,16 @@
             "signal": 8,
             "format": "{}",
             "escape": false
+        },
+
+        "custom/claude-usage": {
+            "exec": "/home/aslate/.config/sway/claude-usage.py",
+            "interval": 300,
+            "return-type": "json",
+            "format": "{}",
+            "escape": false,
+            "on-click": "pkill -RTMIN+9 waybar",
+            "signal": 9
         },
 
         "custom/aws": {
