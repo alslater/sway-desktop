@@ -1,0 +1,8 @@
+# VSCode drops a stub Pipfile into any directory it sees Python in.
+# This repo is sway config, not a Python project — a Pipfile here is always
+# spurious.  (Not globally ignored: other projects still use pipenv for real.)
+Pipfile
+Pipfile.lock
+
+# Serena LSP/agent cache
+.serena/

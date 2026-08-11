@@ -333,6 +333,21 @@ for_window [window_type="popup_menu"]   floating enable
 for_window [window_type="utility"]      floating enable
 for_window [app_id="gcr-prompter"]      floating enable
 
+# Chromium/Edge tooltips (e.g. hovering an Outlook calendar entry) map as a
+# toplevel with an empty app_id and no title, and live as long as you hover.
+# Left tiled, sway gives them a column of their own, squeezing every other
+# window on the workspace (1920 -> 1280 wide) and restoring it on close.
+#
+# floating takes them out of the tiling flow, which is what stops the shuffle.
+# The trade-off: Edge maps them with a zero rect and positions them itself, so
+# sway has no geometry to honour and centres them on the output.  'move
+# position cursor' was tried and is worse — it applies after sway has already
+# centred the window, so the tooltip visibly jumps from centre to pointer.
+# no_focus stops the border of the window underneath flicking focused/
+# unfocused as they map.
+for_window [app_id="^$" title="^$"]     floating enable, border none, move scratchpad
+no_focus   [app_id="^$" title="^$"]
+
 # Floating windows
 # Tabbed layout on all DP-4 workspaces (11-19)
 for_window [workspace="^1[1-9]$"] layout tabbed
@@ -344,24 +359,48 @@ for_window [app_id="pavucontrol"]            floating enable
 for_window [app_id="nm-connection-editor"]   floating enable, border normal 3
 for_window [class="Nm-connection-editor"]    floating enable, border normal 3
 for_window [class="Lazarus"]                 floating enable
-for_window [class="Imager"]                 floating enable
+for_window [app_id="org.gnome.calculator"]   floating enable
+for_window [class="Imager"]                  floating enable
 for_window [app_id="evolution-alarm-notify"] floating enable, sticky enable, resize set 602 660
 for_window [class="Evolution-alarm-notify"]  floating enable, sticky enable
 for_window [class="Msgcompose"]              floating enable
 
-# Edge PWA apps — assign by window instance (crx__<app-id>) so they always
-# land on the correct workspace regardless of which workspace is focused.
+# Edge PWA apps — assign by app_id so they always land on the correct
+# workspace regardless of which workspace is focused.
+#
+# Edge runs as a native Wayland client, so PWA windows report
+# app_id="msedge-_<app-id>-Default" and have no class/instance at all.
 
 # outlook
-assign [class="Microsoft-edge" instance="crx__eoficlgicibekocmfdomjbfnjmehnhcd"] workspace number 1
+assign [app_id="^msedge-_eoficlgicibekocmfdomjbfnjmehnhcd-Default$"] workspace number 1
 # teams
-assign [class="Microsoft-edge" instance="crx__ompifgpmddkgmclendfeacglnodjjndh"] workspace number 1
-# opsgenie
-assign [class="Microsoft-edge" instance="crx__bkpdmhjacabojinehkknegbjnjbpnlco"] workspace number 1
+assign [app_id="^msedge-_ompifgpmddkgmclendfeacglnodjjndh-Default$"] workspace number 1
+# jira service management (replaced opsgenie)
+assign [app_id="^msedge-_mjcjlfljegidiamebiijdnhemblbgejf-Default$"] workspace number 1
 # zabbix
-assign [class="Microsoft-edge" instance="crx__dhlcohdmdbcmonjefecobobgmldndfli"] workspace number 11
+assign [app_id="^msedge-_dhlcohdmdbcmonjefecobobgmldndfli-Default$"] workspace number 11
+# slack
+assign [app_id="^msedge-_jmjjmdplmbiicclopomaanmcilladihg-Default$"] workspace number 11
 # whatsapp
-for_window [class="Microsoft-edge" instance="crx__hnpfjngllnobngcgfapefoaidbinmjnm"] move scratchpad
+for_window [app_id="^msedge-_hnpfjngllnobngcgfapefoaidbinmjnm-Default$"] move scratchpad
+# breathe
+for_window [app_id="^msedge-_iahjopkgbeknmkjlcihfplfdekddejaj-Default$"] move scratchpad
+
+# XWayland fallback — restore these (and comment out the app_id block above)
+# if Edge is forced back to X11 via ~/bin/edge --ozone-platform=x11.
+# Under XWayland the PWA windows report class="Microsoft-edge" with
+# instance="crx__<app-id>" and no app_id.
+#
+# # outlook
+# assign [class="Microsoft-edge" instance="crx__eoficlgicibekocmfdomjbfnjmehnhcd"] workspace number 1
+# # teams
+# assign [class="Microsoft-edge" instance="crx__ompifgpmddkgmclendfeacglnodjjndh"] workspace number 1
+# # opsgenie (superseded by jira service management)
+# assign [class="Microsoft-edge" instance="crx__bkpdmhjacabojinehkknegbjnjbpnlco"] workspace number 1
+# # zabbix
+# assign [class="Microsoft-edge" instance="crx__dhlcohdmdbcmonjefecobobgmldndfli"] workspace number 11
+# # whatsapp
+# for_window [class="Microsoft-edge" instance="crx__hnpfjngllnobngcgfapefoaidbinmjnm"] move scratchpad
 
 
 # VirtualBox — assign VM windows to workspace 20 (not managed by als_tiling,
